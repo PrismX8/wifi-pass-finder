@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Wi-Fi Password</title>
+    <script>
+        async function fetchWiFiPasswords() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/get_wifi_passwords');
+                const data = await response.json();
+
+                if (data.error) {
+                    document.getElementById('output').innerText = "Error: " + data.error;
+                } else {
+                    const result = Object.entries(data)
+                        .map(([profile, password]) => `${profile}: ${password}`)
+                        .join('\n');
+                    document.getElementById('output').innerText = result;
+                }
+            } catch (error) {
+                document.getElementById('output').innerText = "Failed to fetch Wi-Fi passwords.";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Get Wi-Fi Passwords</h1>
+    <button onclick="fetchWiFiPasswords()">Get Wi-Fi Passwords</button>
+    <pre id="output"></pre>
+</body>
+</html>
